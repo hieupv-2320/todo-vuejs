@@ -1,17 +1,35 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <HelloWorld msg="TO DO APP"/>
+    <ToDoList v-bind:toDos = "toDos" v-bind:newTodo="newTodo" v-bind:editting="editting"/>
   </div>
 </template>
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
+import ToDoList from './components/ToDoList.vue'
+const LOCAL_STORAGE_KEY = 'todo-app'
 
 export default {
   name: 'App',
+  data: function () {
+    return {
+      toDos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {},
+      newTodo: null,
+      editting: null
+    }
+  },
   components: {
-    HelloWorld
+    HelloWorld,
+    ToDoList
+  },
+  watch: {
+    toDos: {
+      deep: true,
+      handler (newValue) {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newValue))
+      }
+    }
   }
 }
 </script>
