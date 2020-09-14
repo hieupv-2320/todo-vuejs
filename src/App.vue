@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <HelloWorld msg="TO DO APP"/>
-    <ToDoList v-bind:toDos = "toDos" v-bind:newTodo="newTodo" v-bind:editting="editting"/>
+    <ToDoList :toDos = "toDos" :newTodo="newTodo" :editting="editting" />
   </div>
 </template>
 
