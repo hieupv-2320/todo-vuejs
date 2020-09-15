@@ -101,17 +101,17 @@ export default {
     }    
   },
   computed: {
-    notDone: function () {
-      return this.toDos.filter(m => m.completed == false).length 
+    notDone () {
+      return this.$store.getters.notDone
     },
-    Done() {
-      return this.toDos.filter(m => m.completed == true).length
+    Done () {
+      return this.$store.getters.Done
     },
-    allTasks() {
-      return this.toDos.length
+    allTasks () {
+      return this.$store.getters.allTasks
     }, 
-    count() {
-      return this.$store.state.count
+    count () {
+      return this.$store.getters.count
     }
   },
   filters: {
@@ -120,12 +120,6 @@ export default {
         value = value.toString()
         return value.charAt(0).toUpperCase() + value.slice(1)
       }
-  },
-  mounted () {
-      this.$store.commit({
-        type: 'increment',
-        plus: 10,
-      })
   }
 }
 </script>

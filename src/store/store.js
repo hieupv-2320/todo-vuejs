@@ -1,17 +1,19 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import mutations from './mutations'
+import getter from './getter'
+
 Vue.use(Vuex)
+const LOCAL_STORAGE_KEY = 'todo-app'
 
 export default new Vuex.Store({
-  state: {
-    count: 0,
-    value: 'ahoifwhaoif',
-    age: '19'
+  state: {  
+      toDos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {},
+      newTodo: null,
+      editting: null
   },
   mutations: mutations,
-  getters: {
-  },
+  getters: getter,
   actions: {
   },
   modules: {
