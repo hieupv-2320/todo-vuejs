@@ -7,7 +7,6 @@
                     <input class="form-control" autofocus 
                         v-model.trim="newTodo" 
                         @keyup.enter="Add"  
-                        @blur="Add" 
                         placeholder="Nhập việc cần làm và ấn Enter để thêm"> 
                 </div>
                 <div class="col-2"> 
@@ -25,23 +24,33 @@
                         :key="item.id" 
                         :class="{completed: item.completed}">
                         <td>
-                            <input class="mark" type="checkbox" v-model="item.completed"> 
-                            <span class="checkmark"></span>
+                            <input 
+                              class="mark" 
+                              type="checkbox"
+                              v-model="item.completed"> 
+                            <span class="checkmark">
+                            </span>
                         </td>
                         <td>
                             <div class="ok"> 
                                 <label @click="edit(item)"> 
                                     {{ item.title | capitalize }} 
                                 </label>
-                                <input  v-if="editting == item && item.completed!=true" 
+                                <input v-if="editting == item && item.completed!=true" 
                                     v-model="item.title" 
                                     :class="{}"
-                                    @keyup.escape="cancelEditing"
-                                    @keyup.enter="cancelEditing">
+                                    @keyup.escape="doneEdit"
+                                    @keyup.enter="doneEdit"
+                                >
                             </div>
                         </td>
                         <td width="20%">
-                            <a @click="Delete(item)" title="Xóa" class="delete badge badge-danger"> x </a> 
+                            <a @click="Delete(item)" 
+                              title="Xóa" 
+                              class="delete badge badge-danger"
+                            >
+                               x
+                            </a> 
                         </td>
                     </tr>
                 </table> 
@@ -62,22 +71,20 @@
 </template>
 
 <script>
+const LOCAL_STORAGE_KEY = 'todo-app'
 
 export default {
   name: 'ToDoList',
-  props: {
-    toDos: Array,
-    newTodo: String,
-    editting: Object,
-    itemLeft: Function
+  data: function() {
+    return {
+      toDos: this.$store.state.toDos,
+      newTodo: this.$store.state.newToDo,
+      editting: this.$store.state.editting
+    }
   },
   methods: {
     Add () {
-      if (this.newTodo.length) {
-        this.toDos.push({ 
-        title: this.newTodo, completed: false })
-        this.newTodo = null
-      }
+      this.$store.dispatch('addTask', this.newTodo)
     },
     Delete (item) {
       this.$swal.fire({
@@ -86,8 +93,7 @@ export default {
         showCancelButton: true
       }).then((result) => {
         if(result.isConfirmed) {
-          const index = this.toDos.indexOf(item)
-          this.toDos.splice(index, 1)
+          this.$store.dispatch('deleteToDo', item)
           this.$swal('Done it')
         }
       })
@@ -95,7 +101,7 @@ export default {
     edit (item) {
       this.editting = item;
     },
-    cancelEditing () {
+    doneEdit () {
       this.$swal('Done')
       this.editting = null;
     }    
@@ -120,6 +126,14 @@ export default {
         value = value.toString()
         return value.charAt(0).toUpperCase() + value.slice(1)
       }
+  }, 
+   watch: {
+    toDos: {
+      deep: true,
+      handler (newValue) {
+        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newValue))
+      }
+    }
   }
 }
 </script>

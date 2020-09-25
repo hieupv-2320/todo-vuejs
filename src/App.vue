@@ -1,35 +1,17 @@
 <template>
   <div id="app">
-    <HelloWorld msg="TO DO APP"/>
-    <ToDoList :toDos = "toDos" :newTodo="newTodo" :editting="editting" />
+    <h1> TO DO LIST </h1>
+    <ToDoList :newTodo="newTodo" :editting="editting" />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 import ToDoList from './components/ToDoList.vue'
-const LOCAL_STORAGE_KEY = 'todo-app'
 
 export default {
   name: 'App',
-  data: function () {
-    return {
-      toDos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {},
-      newTodo: null,
-      editting: null
-    }
-  },
   components: {
-    HelloWorld,
     ToDoList
-  },
-  watch: {
-    toDos: {
-      deep: true,
-      handler (newValue) {
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newValue))
-      }
-    }
   }
 }
 </script>
