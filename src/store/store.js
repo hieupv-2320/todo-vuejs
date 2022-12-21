@@ -9,7 +9,7 @@ const LOCAL_STORAGE_KEY = 'todo-app'
 
 export default new Vuex.Store({
   state: {  
-      toDos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || {},
+      toDos: JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || [],
       newTodo: null,
       editting: null,
   },

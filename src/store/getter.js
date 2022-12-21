@@ -1,9 +1,9 @@
 export default {
     notDone: (state) => {
-        return state.toDos.filter(m => m.completed == false).length 
+        return Array.isArray(state.toDos) ? state.toDos.filter(m => m.completed == false).length : 0
       },
     Done: (state) => {
-        return state.toDos.filter(m => m.completed == true).length
+        return Array.isArray(state.toDos) ? state.toDos.filter(m => m.completed == true).length : 0;
     },
     allTasks: (state) =>  {
         return state.toDos.length
